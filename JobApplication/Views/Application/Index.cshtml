@@ -1,0 +1,106 @@
+﻿@model IEnumerable<JobApplication.Models.Applications>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+@if (TempData["InfoMessage"] != null)
+{
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <strong> Alert : </strong> @TempData["InfoMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+else if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <strong> Error : </strong> @TempData["ErrorMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+else if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-info alert-dismissible fade show" role="alert">
+        <strong> Sucess : </strong> @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+}
+
+<p>
+    @Html.ActionLink("Create New", "RegisterApplication", null, new { @class = "btn btn-primary" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LastName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Email)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Phone)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Place)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DOB)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ImageBase64)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ResumeBase64)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Email)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Phone)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Place)
+            </td>
+            <td>
+                @item.DOB.ToString("yyyy-MM-dd")
+            </td>
+            <td>
+                <img src="data:jpg/image;base64,@item.ImageBase64" alt="Student Image" width="50" height="50" />
+            </td>
+            <td>
+                @if (item.ResumeBase64 != null && item.ResumeBase64.Length > 0)
+                {
+                    <a href="@Url.Action("DownloadResume", "Applications", new { id = item.ApplicationID })" class="btn btn-secondary">Download Resume</a>
+                }
+                else
+                {
+                    <span>No Resume</span>
+                }
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "UpdateApplication", new { id = item.ApplicationID }, new { @class = "btn btn-primary" }) |
+                @Html.ActionLink("Details", "ApplicationDetails", new { id = item.ApplicationID }, new { @class = "btn btn-success" }) |
+                @Html.ActionLink("Delete", "DeleteApplication", new { id = item.ApplicationID }, new { @class = "btn btn-danger" })
+            </td>
+        </tr>
+    }
+
+</table>
